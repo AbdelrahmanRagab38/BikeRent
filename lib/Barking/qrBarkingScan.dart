@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'components/background.dart';
 
 class QrBarkingScan extends StatelessWidget {
+  static String id = "QRBarking";
 
   QrBarkingScan({
     Key key,

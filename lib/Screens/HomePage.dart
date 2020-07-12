@@ -1,5 +1,8 @@
+import 'package:bikerent/Barking/Barking_screen.dart';
+import 'package:bikerent/BikeSize/bikeSize_screen.dart';
 import 'package:bikerent/Screens/Login/login_screen.dart';
 import 'package:bikerent/Screens/Signup/signup_screen.dart';
+import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -33,6 +36,7 @@ static String id = "HomePage";
             RoundedButton(
               text: "Rent",
               press: () {
+                Navigator.pushReplacementNamed(context, BikeSizeScreen.id);
 
               },
             ),
@@ -41,6 +45,8 @@ static String id = "HomePage";
               color: kPrimaryLightColor,
               textColor: Colors.black,
               press: () {
+                Navigator.pushReplacementNamed(context, BarkingScreen.id);
+
 
               },
             ),
@@ -48,6 +54,7 @@ static String id = "HomePage";
             RoundedButton(
               text: "Maintainance",
               press: () {
+                Navigator.pushReplacementNamed(context, BikeStoreScreen.id);
 
               },
             ),

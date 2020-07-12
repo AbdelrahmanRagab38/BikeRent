@@ -46,7 +46,7 @@ class _BodyState extends State<Body> {
                 height: 2,
                 color: kPrimaryColor,
               ),
-              DropdownColor: kPrimaryLightColor,
+              //dropdownColor: kPrimaryLightColor,
               hint: Text("  Bike size"),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kPrimaryColor),
               onChanged: (String value){
