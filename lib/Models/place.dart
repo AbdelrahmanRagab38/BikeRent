@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Place {
+  final String id;
   final String name;
   final int numOfBikes;
   final int availableSeats;
@@ -9,7 +10,8 @@ class Place {
   final LatLng position;
 
   Place(
-      {this.position,
+      {this.id,
+        this.position,
       this.name,
       this.availableSeats,
       this.bikes,
@@ -18,6 +20,7 @@ class Place {
   factory Place.fromDoc(DocumentSnapshot doc, List<DocumentSnapshot> bikes) {
     return Place(
         name: doc['name'],
+        id:doc.documentID,
         numOfBikes: doc['numOfBikes'],
         availableSeats: doc['availableSeats'],
         bikes: bikes,

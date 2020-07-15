@@ -9,11 +9,17 @@ class Bike {
 
   Bike({this.size, this.state, this.id, this.placeId, this.rides});
 
-  factory Bike.fromDoc(DocumentSnapshot doc) {
+  factory Bike.fromDoc(DocumentSnapshot doc,List<DocumentSnapshot> rides) {
     return Bike(
         size: doc['size'],
         id: doc.documentID,
         placeId: doc['placeId'],
-        state: doc['state']);
+        state: doc['state'],
+        rides:rides
+    );
+  }
+
+  Map toMap() {
+    return {'size':this.size,'placeId':this.placeId,'rides':rides,'state':state};
   }
 }
