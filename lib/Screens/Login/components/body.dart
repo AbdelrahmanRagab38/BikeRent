@@ -11,17 +11,11 @@ import '../../../authentication.dart';
 import 'background.dart';
 
 class Body extends StatelessWidget {
-
-   Body({
-    Key key,
-  }) : super(key: key);
-
-  String _email;
-  String _password;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    String _email;
+    String _password;
     return Background(
       child: SingleChildScrollView(
         child: Column(
@@ -39,37 +33,28 @@ class Body extends StatelessWidget {
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "Your Email",
-              onChanged: (value) {_email=value;},
+              onChanged: (value) {
+                _email = value;
+              },
             ),
             RoundedPasswordField(
-              onChanged: (value) {_password = value;},
-
+              onChanged: (value) {
+                _password = value;
+              },
             ),
-
-
-
             RoundedButton(
-              text: "LOGIN",
-              press: () async  {
-             Auth myauth= new Auth();
-             final AuthResult = await myauth.signIn(_email, _password);
+                text: "LOGIN",
+                press: () async {
+                  Auth myauth = new Auth();
+                  final authResult = await myauth.signIn(_email, _password);
 
-             if (AuthResult.user.uid != null) {
-               print("success");
-              Navigator.pushReplacementNamed(context, HomePage.id);
-                                           }
-             else {
-             print("Eror");
-                }
-
-    }
-
-            ),
-
-
-
-
-
+                  if (authResult.user.uid != null) {
+                    print("success");
+                    Navigator.pushReplacementNamed(context, HomePage.id);
+                  } else {
+                    print("Eror");
+                  }
+                }),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               press: () {
@@ -87,10 +72,5 @@ class Body extends StatelessWidget {
         ),
       ),
     );
-
-
   }
 }
-
-
-

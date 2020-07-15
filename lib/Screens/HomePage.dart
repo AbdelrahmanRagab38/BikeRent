@@ -1,17 +1,14 @@
 import 'package:bikerent/Barking/Barking_screen.dart';
 import 'package:bikerent/BikeSize/bikeSize_screen.dart';
-import 'package:bikerent/Screens/Login/login_screen.dart';
-import 'package:bikerent/Screens/Signup/signup_screen.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import '../constants.dart';
 import 'Login/components/background.dart';
 
-
 class HomePage extends StatelessWidget {
-static String id = "HomePage";
+  static String id = "HomePage";
   const HomePage({Key key}) : super(key: key);
 
   @override
@@ -37,7 +34,6 @@ static String id = "HomePage";
               text: "Rent",
               press: () {
                 Navigator.pushReplacementNamed(context, BikeSizeScreen.id);
-
               },
             ),
             RoundedButton(
@@ -46,83 +42,20 @@ static String id = "HomePage";
               textColor: Colors.black,
               press: () {
                 Navigator.pushReplacementNamed(context, BarkingScreen.id);
-
-
               },
             ),
-
             RoundedButton(
               text: "Maintainance",
               press: () {
                 Navigator.pushReplacementNamed(context, BikeStoreScreen.id);
-
               },
             ),
-
-
-
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*import 'package:flutter/material.dart';
 

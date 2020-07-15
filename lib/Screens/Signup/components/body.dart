@@ -8,19 +8,18 @@ import 'package:bikerent/components/rounded_input_field.dart';
 import 'package:bikerent/components/rounded_password_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../../../authentication.dart';
 import 'background.dart';
 import 'or_divider.dart';
 
 class Body extends StatelessWidget {
-  String _email;
-  String _password;
-  String _UserName;
-  String _NationalID;
-
   @override
   Widget build(BuildContext context) {
-
+    String _email;
+    String _password;
+    String _userName;
+    String _nationalID;
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
@@ -38,50 +37,43 @@ class Body extends StatelessWidget {
             ),
             RoundedInputField(
               hintText: "Your Email",
-              onChanged: (value) {_email =value;},
+              onChanged: (value) {
+                _email = value;
+              },
             ),
-
             RoundedInputField(
               hintText: "Your UserName",
-              onChanged: (value) {_UserName =value;},
+              onChanged: (value) {
+                _userName = value;
+              },
             ),
             RoundedPasswordField(
-              onChanged: (value) {_password = value;},
+              onChanged: (value) {
+                _password = value;
+              },
             ),
             ConfirmPaswword(
-              onChanged: (value) {_password = value;},
+              onChanged: (value) {
+                _password = value;
+              },
             ),
             RoundedInputField(
               hintText: "Your National Id",
-              onChanged: (value) {_NationalID =value;},
+              onChanged: (value) {
+                _nationalID = value;
+              },
             ),
-
-
-
-
             RoundedButton(
               text: "SIGNUP",
               press: () async {
                 Auth myAuth = new Auth();
-                print(_email +"and the passowrd is "+ _password);
-                final AuthResult = await myAuth.signUp(_email, _password);
-                print("success");
-                print(AuthResult.user.uid);
+                final authResult = await myAuth.signUp(
+                    _email, _password, _userName, _nationalID);
+                print(authResult.user.uid);
                 Navigator.pushReplacementNamed(context, HomePage.id);
               },
             ),
-
-
-
-
-
-
-
-
-
-
-
-    SizedBox(height: size.height * 0.03),
+            SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
               login: false,
               press: () {

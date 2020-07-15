@@ -1,11 +1,13 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class BaseAuth {
   Future<AuthResult> signIn(String email, String password);
 
-  Future<AuthResult> signUp(String email, String password);
+  Future<AuthResult> signUp(
+      String email, String password, String username, String nationalId);
 
   Future<FirebaseUser> getCurrentUser();
 
@@ -16,17 +18,13 @@ abstract class BaseAuth {
   Future<bool> isEmailVerified();
 }
 
-
 class Auth implements BaseAuth {
-
- /* User _userFromFirebaseUser(FirebaseUser user){
+  /* User _userFromFirebaseUser(FirebaseUser user){
    // return user!=null? User(user.uid)
   }*/
 
-
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
- // static final _firestore = Firestore.instance;
-
+  final _firestore = Firestore.instance;
 
   Future<FirebaseUser> getUser() async {
     return await _firebaseAuth.currentUser();
@@ -36,21 +34,20 @@ class Auth implements BaseAuth {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
 
-
-   // FirebaseUser user = result.user;
+    // FirebaseUser user = result.user;
     return result;
   }
 
-
-
-  Future<AuthResult> signUp(String email, String password) async {
+  Future<AuthResult> signUp(
+      String email, String password, String username, String nationalID) async {
+    _firebaseAuth.signOut();
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    //FirebaseUser user = result.user;
+    FirebaseUser user = result.user;
+    await _firestore.collection('users').document(user.uid).setData(
+        {'username': username, 'email': email, 'nationalID': nationalID});
     return result;
   }
-
-
 
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
