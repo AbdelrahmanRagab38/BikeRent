@@ -40,18 +40,30 @@ class Database implements BaseDatabase {
 
   @override
   Future<List<Place>> getPlaces() async {
+    List<Place> placesList = List<Place>();
+    List<Bike> bikesList = List<Bike>();
     QuerySnapshot places = await _firestore.collection('places').getDocuments();
-    List<Place> placesList;
-    places.documents.forEach((place) async {
+
+    await Future.forEach(places.documents, (place) async {
       QuerySnapshot bikes = await _firestore
           .collection('places')
           .document(place.documentID)
           .collection('bikes')
           .getDocuments();
-      Place finalPlace = Place.fromDoc(place, bikes.documents.toList());
+      await Future.forEach(bikes.documents, (bike) async {
+        QuerySnapshot rides = await _firestore
+            .collection('places')
+            .document(place.documentID)
+            .collection('bikes')
+            .document(bike.documentID)
+            .collection('rides')
+            .getDocuments();
+        Bike finalBike = Bike.fromDoc(bike, rides.documents.toList());
+        bikesList.add(finalBike);
+      });
+      Place finalPlace = Place.fromDoc(place, bikesList);
       placesList.add(finalPlace);
     });
-
     return placesList;
   }
 
@@ -59,7 +71,7 @@ class Database implements BaseDatabase {
   Future<bool> park(Place place) async {
     DocumentSnapshot placeDoc =
         await _firestore.collection("places").document(place.id).get();
-    int seats = placeDoc['availableSeats'] - 1;
+    double seats = placeDoc['availableSeats'] - 1;
     await _firestore
         .collection("places")
         .document(place.id)
@@ -75,7 +87,7 @@ class Database implements BaseDatabase {
     await _firestore
         .collection('places')
         .document(bike.placeId)
-        .setData({'numOfBikes': num});
+        .updateData({'numOfBikes': num});
     await _firestore
         .collection('places')
         .document(bike.placeId)
@@ -85,7 +97,15 @@ class Database implements BaseDatabase {
     await _firestore
         .collection("rented")
         .document(bike.id)
-        .setData(bike.toMap());
+        .setData({'size': bike.size, 'state': 'rented'});
+    await Future.forEach(bike.rides, (ride) async {
+      await _firestore
+          .collection("rented")
+          .document(bike.id)
+          .collection('rides')
+          .document(ride.documentID)
+          .setData({"user": ride['user']});
+    });
     return true;
   }
 
@@ -110,13 +130,24 @@ class Database implements BaseDatabase {
     await _firestore
         .collection('places')
         .document(destination.id)
-        .setData({'numOfBikes': num});
+        .updateData({'numOfBikes': num});
     await _firestore
         .collection('places')
         .document(destination.id)
         .collection('bikes')
         .document(bike.id)
-        .setData(bike.toMap());
+        .setData(
+            {'size': bike.size, 'state': 'free', "placeId": destination.id});
+    await Future.forEach(bike.rides, (ride) async {
+      await _firestore
+          .collection("places")
+          .document(destination.id)
+          .collection('bikes')
+          .document(bike.id)
+          .collection('rides')
+          .document(ride.documentID)
+          .setData({"user": ride['user']});
+    });
     await _firestore.collection("rented").document(bike.id).delete();
     return true;
   }
@@ -125,7 +156,7 @@ class Database implements BaseDatabase {
   Future<bool> finishParking(Place place) async {
     DocumentSnapshot placeDoc =
         await _firestore.collection("places").document(place.id).get();
-    int seats = placeDoc['availableSeats'] + 1;
+    double seats = placeDoc['availableSeats'] + 1;
     await _firestore
         .collection("places")
         .document(place.id)

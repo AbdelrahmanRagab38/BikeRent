@@ -1,5 +1,5 @@
 import 'package:bikerent/Barking/Barking_screen.dart';
-import 'package:bikerent/BikeSize/bikeSize_screen.dart';
+import 'package:bikerent/Screens/LocationsMap/map.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -15,42 +15,47 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     // This size provide us total height and width of our screen
-    return Background(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            /*Text(
-              "WELCOME TO Bike Rent",
-              style: TextStyle(fontWeight: FontWeight.bold , fontSize: 21),
-            ),
-            SizedBox(height: size.height * 0.05),
-            SvgPicture.asset(
-              "assets/icons/chat.svg",
-              height: size.height * 0.45,
-            ),*/
-            SizedBox(height: size.height * 0.05),
-            RoundedButton(
-              text: "Rent",
-              press: () {
-                Navigator.pushReplacementNamed(context, BikeSizeScreen.id);
-              },
-            ),
-            RoundedButton(
-              text: "Barking",
-              color: kPrimaryLightColor,
-              textColor: Colors.black,
-              press: () {
-                Navigator.pushReplacementNamed(context, BarkingScreen.id);
-              },
-            ),
-            RoundedButton(
-              text: "Maintainance",
-              press: () {
-                Navigator.pushReplacementNamed(context, BikeStoreScreen.id);
-              },
-            ),
-          ],
+    return Container(
+      color: Colors.white,
+      child: Background(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              /*Text(
+                "WELCOME TO Bike Rent",
+                style: TextStyle(fontWeight: FontWeight.bold , fontSize: 21),
+              ),
+              SizedBox(height: size.height * 0.05),
+              SvgPicture.asset(
+                "assets/icons/chat.svg",
+                height: size.height * 0.45,
+              ),*/
+              SizedBox(height: size.height * 0.05),
+              RoundedButton(
+                text: "Rent",
+                press: () async {
+                  Navigator.pushReplacementNamed(context, LocationsMap.id);
+//                  String cameraScanResult = await scanner.scanPhoto();
+//                  print(cameraScanResult);
+                },
+              ),
+              RoundedButton(
+                text: "Barking",
+                color: kPrimaryLightColor,
+                textColor: Colors.black,
+                press: () {
+                  Navigator.pushReplacementNamed(context, BarkingScreen.id);
+                },
+              ),
+              RoundedButton(
+                text: "Maintainance",
+                press: () {
+                  Navigator.pushReplacementNamed(context, BikeStoreScreen.id);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
