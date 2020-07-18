@@ -71,11 +71,11 @@ class Database implements BaseDatabase {
   Future<bool> park(Place place) async {
     DocumentSnapshot placeDoc =
         await _firestore.collection("places").document(place.id).get();
-    double seats = placeDoc['availableSeats'] - 1;
+    int seats = placeDoc['availableSeats'] - 1;
     await _firestore
         .collection("places")
         .document(place.id)
-        .setData({'availableSeats': seats});
+        .updateData({'availableSeats': seats});
     return true;
   }
 
@@ -156,11 +156,11 @@ class Database implements BaseDatabase {
   Future<bool> finishParking(Place place) async {
     DocumentSnapshot placeDoc =
         await _firestore.collection("places").document(place.id).get();
-    double seats = placeDoc['availableSeats'] + 1;
+    int seats = placeDoc['availableSeats'] + 1;
     await _firestore
         .collection("places")
         .document(place.id)
-        .setData({'availableSeats': seats});
+        .updateData({'availableSeats': seats});
     return true;
   }
 }

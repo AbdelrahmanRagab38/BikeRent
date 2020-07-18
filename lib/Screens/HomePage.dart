@@ -1,5 +1,5 @@
-import 'package:bikerent/Barking/Barking_screen.dart';
 import 'package:bikerent/Screens/LocationsMap/map.dart';
+import 'package:bikerent/Screens/LocationsMap/parkingMap.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
               RoundedButton(
                 text: "Rent",
                 press: () async {
-                  Navigator.pushReplacementNamed(context, LocationsMap.id);
+                  Navigator.pushNamed(context, LocationsMap.id);
 //                  String cameraScanResult = await scanner.scanPhoto();
 //                  print(cameraScanResult);
                 },
@@ -45,13 +45,13 @@ class HomePage extends StatelessWidget {
                 color: kPrimaryLightColor,
                 textColor: Colors.black,
                 press: () {
-                  Navigator.pushReplacementNamed(context, BarkingScreen.id);
+                  Navigator.pushNamed(context, ParkingMap.id);
                 },
               ),
               RoundedButton(
                 text: "Maintainance",
                 press: () {
-                  Navigator.pushReplacementNamed(context, BikeStoreScreen.id);
+                  Navigator.pushNamed(context, BikeStoreScreen.id);
                 },
               ),
             ],
