@@ -36,8 +36,6 @@ class HomePage extends StatelessWidget {
                 text: "Rent",
                 press: () async {
                   Navigator.pushNamed(context, LocationsMap.id);
-//                  String cameraScanResult = await scanner.scanPhoto();
-//                  print(cameraScanResult);
                 },
               ),
               RoundedButton(
@@ -49,7 +47,7 @@ class HomePage extends StatelessWidget {
                 },
               ),
               RoundedButton(
-                text: "Maintainance",
+                text: "My Park",
                 press: () {
                   Navigator.pushNamed(context, BikeStoreScreen.id);
                 },

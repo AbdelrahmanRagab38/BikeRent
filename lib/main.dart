@@ -3,13 +3,13 @@ import 'package:bikerent/Barking/qrBarkingScan.dart';
 import 'package:bikerent/BikeSize/bikeSize_screen.dart';
 import 'package:bikerent/Screens/HomePage.dart';
 import 'package:bikerent/Screens/LocationsMap/map.dart';
-import 'package:bikerent/Screens/LocationsMap/parkingMap.dart';
 import 'package:bikerent/Screens/Splash_Screen.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/Store/StoreCash/storeCash_screen.dart';
 import 'package:bikerent/Store/StoreLogin/storeLogin_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'Screens/LocationsMap/parkingMap.dart';
 import 'Screens/Welcome/welcome_screen.dart';
 import 'constants.dart';
 
@@ -36,8 +36,8 @@ class MyApp extends StatelessWidget {
         BikeStoreScreen.id: (context) => BikeStoreScreen(),
         BikeSizeScreen.id: (context) => BikeSizeScreen(),
         QrBarkingScan.id: (context) => QrBarkingScan(),
-        LocationsMap.id: (context) => LocationsMap(),
         ParkingMap.id: (context) => ParkingMap(),
+        LocationsMap.id: (context) => LocationsMap(),
       },
     );
   }

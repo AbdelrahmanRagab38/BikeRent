@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ParkingMap extends StatefulWidget {
-  static final String id = "ParkingMap";
-
+  static final id = "/ParkingMap";
   @override
   _ParkingMapState createState() => _ParkingMapState();
 }

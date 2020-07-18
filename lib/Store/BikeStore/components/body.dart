@@ -1,18 +1,17 @@
+import 'package:bikerent/Database/database.dart';
+import 'package:bikerent/Models/bike.dart';
 import 'package:bikerent/components/lightRounded_button.dart';
-import 'package:bikerent/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'background.dart';
 
 class Body extends StatelessWidget {
-
-   Body({
+  Body({
     Key key,
   }) : super(key: key);
 
-
-   @override
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
@@ -21,57 +20,66 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "TAHRIR STORE",
-              style: TextStyle(fontSize: 32 ,fontWeight: FontWeight.bold, color: kPrimaryColor),
+              "Bike Rent 1",
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             SizedBox(height: size.height * 0.03),
-            /*SvgPicture.asset(
-              "assets/icons/bikee.svg",
-              height: size.height * 0.30,
-            ),*/
-
             SizedBox(height: size.height * 0.03),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            Column(
               children: [
-                Column(
-                  children: [
-                    LightRoundedButton(
-                      text: "VIEW RENTING BIKE",
-                      press: (){
-
-                      }
-                    ),
-                    SizedBox(height: size.height * 0.03),
-                    LightRoundedButton(
-                        text: "VIEW COMING BIKE",
-                        press: (){
-
-                        }
-                    ),
-                    SizedBox(height: size.height * 0.2),
-                    LightRoundedButton(
-                        text: "BARCODE",
-                        press: (){
-                          Navigator.pushNamed(context, '/storeCash');
-
-                        }
-                    ),
-
-                  ],
-                ),
+                LightRoundedButton(
+                    text: "VIEW RENTED BIKES",
+                    press: () async {
+                      List<Bike> bikes = await Database().getRentedBikes();
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Scaffold(
+                              body: bikes.length > 0
+                                  ? ListView(
+                                      children: bikes.map((bike) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            bike.id,
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: 17),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    )
+                                  : Center(
+                                      child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text('No Bikes Rented'),
+                                        RaisedButton(
+                                          child: Text('Back'),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        )
+                                      ],
+                                    )),
+                            );
+                          });
+                    }),
+                SizedBox(height: size.height * 0.03),
+                LightRoundedButton(
+                    text: "Back",
+                    press: () {
+                      Navigator.pop(context);
+                    }),
               ],
             ),
           ],
         ),
       ),
     );
-
-
   }
 }
-
-
-

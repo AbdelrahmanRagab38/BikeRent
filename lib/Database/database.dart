@@ -12,6 +12,7 @@ abstract class BaseDatabase {
   Future<bool> finishRide(Bike bike, Place place);
   Future<List<DocumentSnapshot>> getMaintenance(Place place);
   Future<bool> finishParking(Place place);
+  Future<List<Bike>> getRentedBikes();
 }
 
 class Database implements BaseDatabase {
@@ -162,5 +163,16 @@ class Database implements BaseDatabase {
         .document(place.id)
         .updateData({'availableSeats': seats});
     return true;
+  }
+
+  @override
+  Future<List<Bike>> getRentedBikes() async {
+    List<Bike> bikes = List<Bike>();
+    QuerySnapshot bikesDocs =
+        await _firestore.collection('rented').getDocuments();
+    await Future.forEach(bikesDocs.documents, (doc) {
+      bikes.add(Bike.fromDoc(doc, null));
+    });
+    return bikes;
   }
 }

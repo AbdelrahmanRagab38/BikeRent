@@ -8,7 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 class LocationsMap extends StatefulWidget {
-  static final String id = "locationsMap";
+  static final String id = "/locationsMap";
 
   @override
   _LocationsMapState createState() => _LocationsMapState();
