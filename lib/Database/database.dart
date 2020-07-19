@@ -3,6 +3,7 @@ import 'package:bikerent/Models/place.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 abstract class BaseDatabase {
   Future<List<Place>> getPlaces();
   Future<bool> rentBike(Bike bike);
