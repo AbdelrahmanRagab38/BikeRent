@@ -21,7 +21,7 @@ class QrBarkingScan extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: size.height * 0.05),
               Text(
-                "BARKING",
+                "PARKING",
                 style: TextStyle(
                     fontSize: 44,
                     fontWeight: FontWeight.bold,

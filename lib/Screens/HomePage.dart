@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                 },
               ),
               RoundedButton(
-                text: "Barking",
+                text: "Parking",
                 color: kPrimaryLightColor,
                 textColor: Colors.black,
                 press: () {

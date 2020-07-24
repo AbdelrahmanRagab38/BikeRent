@@ -24,7 +24,7 @@ class BarkingSeats extends StatelessWidget {
     Widget build(BuildContext context) {
       return  Scaffold(appBar: AppBar(
         backgroundColor: Colors.indigo,
-        title: Text("All Barked Seats") ,
+        title: Text("All Parked Seats") ,
       ), body: Container(color: kPrimaryLightColor,
 
       child:StreamBuilder<QuerySnapshot>(

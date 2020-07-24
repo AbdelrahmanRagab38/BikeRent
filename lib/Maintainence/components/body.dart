@@ -1,5 +1,6 @@
 import 'package:bikerent/Database/database.dart';
 import 'package:bikerent/Models/bike.dart';
+import 'package:bikerent/components/lightRounded_button.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:bikerent/components/rounded_input_field.dart';
 import 'package:bikerent/constants.dart';
@@ -266,6 +267,16 @@ StreamBuilder<QuerySnapshot>(
                 Scaffold.of(context).showSnackBar(snackBar);
 
               }
+            ),
+
+
+
+            LightRoundedButton(
+                text: "Back",
+                color: Colors.grey,
+                press: () async{
+                Navigator.pop(context);
+                }
             ),
 
           ],
