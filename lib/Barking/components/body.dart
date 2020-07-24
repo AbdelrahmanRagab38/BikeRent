@@ -2,6 +2,8 @@ import 'package:bikerent/Database/database.dart';
 import 'package:bikerent/Models/place.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:bikerent/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'background.dart';
@@ -16,6 +18,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final firestoreInstance = Firestore.instance;
+
   String message = 'Park here';
 
   String buttonText = 'confirm';
@@ -63,15 +67,50 @@ class _BodyState extends State<Body> {
 
             RoundedButton(
                 text: buttonText,
-                press: () {
+                press:  ()  async{
                   if (message == 'Park here') {
-                    Database().park(widget.place);
+
+                    var firebaseUser = await FirebaseAuth.instance.currentUser();
+                    String username = "";
+                    String Nat  = "";
+
+
+                    firestoreInstance.collection("users").document(firebaseUser.uid).get().then((value){
+                      username = value['username'];
+                      Nat = value ["nationalID"];
+                      print(username);
+                      Database().park(widget.place , username , Nat);
+
+                    });
+
+
+
+
+
                     setState(() {
                       message = 'Finish parking';
                       buttonText = 'finish';
                     });
                   } else {
-                    Database().finishParking(widget.place);
+                 //   await firestoreInstance.collection("Barking requests").document(bike.id).delete();
+
+                    var firebaseUser = await FirebaseAuth.instance.currentUser();
+                    String username = "";
+                    String Nat  = "";
+
+
+                    firestoreInstance.collection("users").document(firebaseUser.uid).get().then((value){
+                      username = value['username'];
+                      Nat = value ["nationalID"];
+                      print(username);
+                      print(Nat);
+                      Database().finishParking(widget.place,username ,Nat);
+
+                    });
+
+
+
+
                     Navigator.pop(context);
                   }
                 }),

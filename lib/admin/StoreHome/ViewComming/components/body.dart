@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
                 LightRoundedButton(
                     text: "VIEW COMMING BIKES",
                     press: () async {
-                      List<Bike> bikes = await Database().getRentedBikes();
+                      List<Bike> bikes = await Database().getCommingBikes("Bike Rent 1");
                       showDialog(
                           context: context,
                           builder: (context) {

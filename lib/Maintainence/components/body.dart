@@ -1,11 +1,14 @@
+import 'package:bikerent/Database/database.dart';
+import 'package:bikerent/Models/bike.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:bikerent/components/rounded_input_field.dart';
 import 'package:bikerent/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'background.dart';
-
+import 'package:bikerent/Models/place.dart';
 
 
 
@@ -22,8 +25,10 @@ class Body extends StatefulWidget {
 
 
 class _BodyStatee extends State<Body> {
+
   final firestoreInstance = Firestore.instance;
   String dropdownValue = "Tier";
+  String PlaceValue = "Bike Rent 1";
   String _request = "" ;
   @override
   Widget build(BuildContext context) {
@@ -44,6 +49,49 @@ class _BodyStatee extends State<Body> {
 
 
 
+            Row(
+              children: <Widget>[
+                Text(
+                  "    select Place:       ",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: kPrimaryColor),
+                ),
+                StreamBuilder<QuerySnapshot>(
+                  stream: firestoreInstance.collection('places').snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Text('Loading....');
+                    }
+                    return DropdownButton(
+                      value: PlaceValue,
+                      isDense: true,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kPrimaryColor),
+                      hint: Text('Get Places'),
+                      onChanged: (newValue) {
+                        setState(() {
+                          PlaceValue = newValue;
+                        });
+                      },
+                      items: snapshot.data != null
+                          ? snapshot.data.documents.map((document) {
+                        return DropdownMenuItem(
+                          value: document.data['name'].toString(),
+                          child: Text(document.data['name'].toString()),
+                        );
+                      }).toList()
+                          : DropdownMenuItem(
+                        value: 'null',
+                        child: Text('null'),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+
+            SizedBox(height: size.height * 0.01),
 
             Row(
               children: <Widget>[
@@ -168,12 +216,16 @@ StreamBuilder<QuerySnapshot>(
                 firestoreInstance.collection("users").document(firebaseUser.uid).get().then((value){
                 username = value['username'];
                 print(username);
+
                 firestoreInstance.collection("requested tools").add(
                     {
                       "requested tool" : dropdownValue,
                       "userId": firebaseUser.uid,
                       "username": username,
                       "NationalId":value['nationalID'],
+                      "Time": new DateTime.now(),
+                      "store place": PlaceValue,
+
 
                     }).then((value){
                   print(value.documentID);

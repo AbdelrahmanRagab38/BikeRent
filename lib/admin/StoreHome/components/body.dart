@@ -1,3 +1,4 @@
+import 'package:bikerent/Barking/Barking_screen.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/admin/view_MaintainanceRequests.dart';
 import 'package:bikerent/components/lightRounded_button.dart';
@@ -5,6 +6,7 @@ import 'package:bikerent/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../view_BarkingSeats.dart';
 import 'background.dart';
 
 class Body extends StatelessWidget {
@@ -51,6 +53,17 @@ class Body extends StatelessWidget {
                         text: "VIEW COMING BIKE",
                         press: (){
 
+                          Navigator.pushNamed(context, BikeStoreScreen.id);
+
+
+                        }
+                    ),
+
+                    LightRoundedButton(
+                        text: "View Barking seats",
+                        press: (){
+                          Navigator.pushNamed(context, BarkingSeats.id);
+
                         }
                     ),
 
@@ -62,15 +75,14 @@ class Body extends StatelessWidget {
                         }
                     ),
 
-
                     SizedBox(height: size.height * 0.2),
-                    LightRoundedButton(
-                        text: "BARCODE",
-                        press: (){
-                          Navigator.pushNamed(context, '/storeCash');
-
-                        }
-                    ),
+//                    LightRoundedButton(
+//                        text: "BARCODE",
+//                        press: (){
+//                          Navigator.pushNamed(context, '/storeCash');
+//
+//                        }
+//                    ),
 
                   ],
                 ),

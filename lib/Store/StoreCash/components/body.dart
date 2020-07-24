@@ -5,9 +5,16 @@ import 'package:flutter/material.dart';
 import 'background.dart';
 
 class Body extends StatelessWidget {
+  int rentedTime ;
+  Body({this.rentedTime});
+
+
   @override
   Widget build(BuildContext context) {
-    String cashData = "Here is the data";
+    double price = (DateTime.now().hour+ 2 - rentedTime)  * 2.5;
+    int time = rentedTime -DateTime.now().hour +1 ;
+
+    String cashData = "You rent the bike for";
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
@@ -35,7 +42,7 @@ class Body extends StatelessWidget {
                   height: size.height * 0.68,
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                   child: Text(
-                    cashData,
+                    cashData + " $time Hours" +"\nAnd it costs : "+ "$price" +" \$",
                     style: TextStyle(fontSize: 20, color: kPrimaryColor),
                   ),
                 ),
@@ -48,6 +55,10 @@ class Body extends StatelessWidget {
                 text: "DONE",
                 press: () {
                   Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+
+
                   //Navigator.pushNamed(context, '/bikeStore');
                 }),
           ],

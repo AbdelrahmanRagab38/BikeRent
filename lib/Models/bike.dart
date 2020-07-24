@@ -18,6 +18,16 @@ class Bike {
         rides: rides);
   }
 
+
+
+  factory Bike.fromDocs(DocumentSnapshot doc) {
+    return Bike(
+        size: doc['size'],
+        id: doc.documentID.toString(),
+        placeId: doc['placeId'],
+        state: doc['state'],
+        );
+  }
   Map toMap() {
     return {
       'size': this.size,

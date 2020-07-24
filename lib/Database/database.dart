@@ -7,13 +7,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class BaseDatabase {
   Future<List<Place>> getPlaces();
   Future<bool> rentBike(Bike bike);
-  Future<bool> park(Place place);
+  Future<bool> park(Place place , String userName , String natId);
   Future<bool> bookMaintenance(Place place, String time ,String requestedTool);
   Future<Bike> getBike(String id);
   Future<bool> finishRide(Bike bike, Place place);
   Future<List<DocumentSnapshot>> getMaintenance(Place place);
-  Future<bool> finishParking(Place place);
+  Future<bool> finishParking(Place place , String userName, String Nat);
   Future<List<Bike>> getRentedBikes();
+  Future<List<Bike>> getCommingBikes(String placeName);
+
 }
 
 class Database implements BaseDatabase {
@@ -70,7 +72,7 @@ class Database implements BaseDatabase {
   }
 
   @override
-  Future<bool> park(Place place) async {
+  Future<bool> park(Place place, String userName , String natId) async {
     DocumentSnapshot placeDoc =
         await _firestore.collection("places").document(place.id).get();
     int seats = placeDoc['availableSeats'] - 1;
@@ -78,6 +80,15 @@ class Database implements BaseDatabase {
         .collection("places")
         .document(place.id)
         .updateData({'availableSeats': seats});
+
+    _firestore.collection("Barking requests").document(natId).setData({
+      "Store Name" : placeDoc["name"],
+      "seat" : seats+1,
+      "userName" : userName,
+      "natId": natId,
+
+    });
+
 
     /// user hot
     return true;
@@ -101,7 +112,7 @@ class Database implements BaseDatabase {
     await _firestore
         .collection("rented")
         .document(bike.id)
-        .setData({'size': bike.size, 'state': 'rented'});
+        .setData({'size': bike.size, 'state': 'rented', "lastPlace":place.documentID });
     await Future.forEach(bike.rides, (ride) async {
       await _firestore
           .collection("rented")
@@ -112,6 +123,7 @@ class Database implements BaseDatabase {
     });
     return true;
   }
+
 
   @override
   Future<Bike> getBike(String id) async {
@@ -157,14 +169,17 @@ class Database implements BaseDatabase {
   }
 
   @override
-  Future<bool> finishParking(Place place) async {
-    DocumentSnapshot placeDoc =
-        await _firestore.collection("places").document(place.id).get();
+  Future<bool> finishParking(Place place, String userName, String Nat) async {
+
+    DocumentSnapshot placeDoc = await _firestore.collection("places").document(place.id).get();
     int seats = placeDoc['availableSeats'] + 1;
     await _firestore
         .collection("places")
         .document(place.id)
         .updateData({'availableSeats': seats});
+    await _firestore .collection("Barking requests").document(Nat).delete();
+
+
     return true;
   }
 
@@ -177,5 +192,18 @@ class Database implements BaseDatabase {
       bikes.add(Bike.fromDoc(doc, null));
     });
     return bikes;
+  }
+
+  @override
+  Future<List<Bike>> getCommingBikes(String stroeName) async {
+    List<Bike> bikes = List<Bike>();
+   QuerySnapshot comBikes= await _firestore.collection("rented").where("lastplace" ,  isEqualTo: stroeName).getDocuments();
+
+   await Future.forEach(comBikes.documents , (value){
+     Bike b = new Bike.fromDoc(value, null);
+     bikes.add(b);
+   }  );
+
+        return bikes;
   }
 }

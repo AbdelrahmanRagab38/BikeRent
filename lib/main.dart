@@ -8,7 +8,9 @@ import 'package:bikerent/Screens/Splash_Screen.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/Store/StoreCash/storeCash_screen.dart';
 import 'package:bikerent/Store/StoreLogin/storeLogin_screen.dart';
+import 'package:bikerent/admin/StoreHome/ViewComming/bikeRent_screen.dart';
 import 'package:bikerent/admin/StoreHome/storeHome_screen.dart';
+import 'package:bikerent/admin/StoreHome/view_BarkingSeats.dart';
 import 'package:bikerent/admin/view_MaintainanceRequests.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +46,11 @@ class MyApp extends StatelessWidget {
         MaintainenceScreen.id: (context) => MaintainenceScreen(),
         StoreHome.id: (context) => StoreHome(),
         MaintainanceRequests.id: (context) => MaintainanceRequests(),
+        BarkingSeats.id: (context) => BarkingSeats(),
+        viewBikecommingScreen.id: (context) => viewBikecommingScreen(),
+
+
+
 
 
       },

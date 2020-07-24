@@ -3,11 +3,14 @@ import 'package:bikerent/Store/StoreCash/components/body.dart';
 
 class StoreCashScreen extends StatelessWidget {
   static String id = "StoreCash";
+  int rentedTime ;
+
+  StoreCashScreen({this.rentedTime});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Body(),
+      body: Body(rentedTime: rentedTime,),
     );
   }
 }
