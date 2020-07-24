@@ -31,7 +31,7 @@ class Body extends StatelessWidget {
             Column(
               children: [
                 LightRoundedButton(
-                    text: "VIEW COMMING BIKES",
+                    text: "VIEW Rented BIKES",
                     press: () async {
                       List<Bike> bikes = await Database().getRentedBikes();
                       showDialog(
