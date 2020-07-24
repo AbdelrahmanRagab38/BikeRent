@@ -1,3 +1,4 @@
+import 'package:bikerent/Maintainence/Maintainence_screen.dart';
 import 'package:bikerent/Screens/LocationsMap/map.dart';
 import 'package:bikerent/Screens/LocationsMap/parkingMap.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
@@ -47,9 +48,9 @@ class HomePage extends StatelessWidget {
                 },
               ),
               RoundedButton(
-                text: "My Park",
+                text: "Maintanince",
                 press: () {
-                  Navigator.pushNamed(context, BikeStoreScreen.id);
+                  Navigator.pushNamed(context, MaintainenceScreen.id);
                 },
               ),
             ],

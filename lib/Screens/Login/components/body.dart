@@ -1,5 +1,6 @@
 import 'package:bikerent/Screens/HomePage.dart';
 import 'package:bikerent/Screens/Signup/signup_screen.dart';
+import 'package:bikerent/admin/StoreHome/storeHome_screen.dart';
 import 'package:bikerent/components/already_have_an_account_acheck.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:bikerent/components/rounded_input_field.dart';
@@ -11,6 +12,8 @@ import '../../../authentication.dart';
 import 'background.dart';
 
 class Body extends StatelessWidget {
+  final adminPassword = 'Admin1234';
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,7 +35,7 @@ class Body extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
-              hintText: "Your Email",
+              hintText: "Email",
               onChanged: (value) {
                 _email = value;
               },
@@ -46,14 +49,30 @@ class Body extends StatelessWidget {
                 text: "LOGIN",
                 press: () async {
                   Auth myauth = new Auth();
-                  final authResult = await myauth.signIn(_email, _password);
 
-                  if (authResult.user.uid != null) {
-                    print("success");
-                    Navigator.pushReplacementNamed(context, HomePage.id);
-                  } else {
-                    print("Eror");
+                  if (_password == adminPassword) {
+                    try {
+                      await myauth.signIn(_email, _password);
+                      Navigator.pushNamed(context, StoreHome.id);
+                    }
+                    catch(e){
+                      print(e);
+                    }
+
                   }
+else {
+                    final authResult = await myauth.signIn(_email, _password);
+                    print(authResult);
+
+                    if (authResult.user.uid != null) {
+                      print("success");
+                      Navigator.pushReplacementNamed(context, HomePage.id);
+                    } else {
+                      print("Eror");
+                    }
+                  }
+
+
                 }),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(

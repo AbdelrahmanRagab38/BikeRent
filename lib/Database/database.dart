@@ -8,7 +8,7 @@ abstract class BaseDatabase {
   Future<List<Place>> getPlaces();
   Future<bool> rentBike(Bike bike);
   Future<bool> park(Place place);
-  Future<bool> bookMaintenance(Place place, String time);
+  Future<bool> bookMaintenance(Place place, String time ,String requestedTool);
   Future<Bike> getBike(String id);
   Future<bool> finishRide(Bike bike, Place place);
   Future<List<DocumentSnapshot>> getMaintenance(Place place);
@@ -20,13 +20,13 @@ class Database implements BaseDatabase {
   final _firestore = Firestore.instance;
 
   @override
-  Future<bool> bookMaintenance(Place place, String time) async {
+  Future<bool> bookMaintenance(Place place, String time, String requstedTool) async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     await _firestore
         .collection('places')
         .document(place.id)
         .collection('maintenance')
-        .add({"time": time, "user": user.uid});
+        .add({"time": time, "user": user.uid , "request": requstedTool});
     return true;
   }
 
@@ -78,6 +78,8 @@ class Database implements BaseDatabase {
         .collection("places")
         .document(place.id)
         .updateData({'availableSeats': seats});
+
+    /// user hot
     return true;
   }
 

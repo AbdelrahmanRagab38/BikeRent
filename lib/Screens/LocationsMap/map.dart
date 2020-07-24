@@ -190,7 +190,7 @@ class _LocationsMapState extends State<LocationsMap> {
                               text: 'Rent',
                               press: () async {
                                 String cameraScanResult =
-                                    await scanner.scanPhoto();
+                                    await scanner.scan();
                                 Bike bike = selectedPlace.bikes.firstWhere(
                                     (bike) => bike.id == cameraScanResult);
                                 Navigator.pushReplacement(
