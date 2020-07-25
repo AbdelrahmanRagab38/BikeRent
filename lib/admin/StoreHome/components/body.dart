@@ -1,5 +1,6 @@
 import 'package:bikerent/Barking/Barking_screen.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
+import 'package:bikerent/admin/StoreHome/ViewComming/bikeRent_screen.dart';
 import 'package:bikerent/admin/view_MaintainanceRequests.dart';
 import 'package:bikerent/components/lightRounded_button.dart';
 import 'package:bikerent/constants.dart';
@@ -53,7 +54,7 @@ class Body extends StatelessWidget {
                         text: "VIEW COMING BIKE",
                         press: (){
 
-                          Navigator.pushNamed(context, BikeStoreScreen.id);
+                          Navigator.pushNamed(context, viewBikecommingScreen.id);
 
 
                         }

@@ -73,22 +73,28 @@ class _BodyState extends State<Body> {
                     var firebaseUser = await FirebaseAuth.instance.currentUser();
                     String username = "";
                     String Nat  = "";
+                    int seat ;
 
 
-                    firestoreInstance.collection("users").document(firebaseUser.uid).get().then((value){
+                  await  firestoreInstance.collection("users").document(firebaseUser.uid).get().then((value) async {
                       username = value['username'];
                       Nat = value ["nationalID"];
                       print(username);
-                      Database().park(widget.place , username , Nat);
+                     seat= await Database().park(widget.place , username , Nat);
 
                     });
 
 
+//                    DocumentSnapshot placeDoc =
+//                    await firestoreInstance.collection("places").document(widget.place.id).get();
+//                    int seats = placeDoc['availableSeats'] ;
+//
+//                    message = '$username + You parked at $seats';
 
 
 
                     setState(() {
-                      message = 'Finish parking';
+                      message = 'Hello mr, $username Your Parked seat is $seat';
                       buttonText = 'finish';
                     });
                   } else {

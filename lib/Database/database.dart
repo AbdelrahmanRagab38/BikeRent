@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class BaseDatabase {
   Future<List<Place>> getPlaces();
   Future<bool> rentBike(Bike bike);
-  Future<bool> park(Place place , String userName , String natId);
+  Future<int> park(Place place , String userName , String natId);
   Future<bool> bookMaintenance(Place place, String time ,String requestedTool);
   Future<Bike> getBike(String id);
   Future<bool> finishRide(Bike bike, Place place);
@@ -72,7 +72,7 @@ class Database implements BaseDatabase {
   }
 
   @override
-  Future<bool> park(Place place, String userName , String natId) async {
+  Future<int> park(Place place, String userName , String natId) async {
     DocumentSnapshot placeDoc =
         await _firestore.collection("places").document(place.id).get();
     int seats = placeDoc['availableSeats'] - 1;
@@ -91,7 +91,7 @@ class Database implements BaseDatabase {
 
 
     /// user hot
-    return true;
+    return seats+1;
   }
 
   @override

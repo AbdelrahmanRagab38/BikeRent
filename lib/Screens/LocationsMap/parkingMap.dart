@@ -4,6 +4,7 @@ import 'package:bikerent/Models/place.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 class ParkingMap extends StatefulWidget {
   static final id = "/ParkingMap";
@@ -14,6 +15,9 @@ class ParkingMap extends StatefulWidget {
 class _ParkingMapState extends State<ParkingMap> {
   GoogleMapController _controller;
   String dropdownValue = "Select Place";
+
+ // var location = new Location();
+
   CameraPosition _cameraPosition =
       CameraPosition(target: LatLng(30.025, 31), zoom: 14);
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};

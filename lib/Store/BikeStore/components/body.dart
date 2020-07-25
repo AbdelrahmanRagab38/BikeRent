@@ -57,7 +57,7 @@ class Body extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Text('No Bikes Comming'),
+                                        Text('No Bikes is Rented'),
                                         RaisedButton(
                                           child: Text('Back'),
                                           onPressed: () {
