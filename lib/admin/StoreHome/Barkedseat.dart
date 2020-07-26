@@ -1,6 +1,6 @@
 class BarkedSeat {
   String nationalId;
-  String barkedSeat;
+  int barkedSeat;
   String UserName;
   String StoreName;
 

@@ -142,7 +142,7 @@ class _BodyState extends State<Body> {
                 text: "RENT",
                 press: () {
                   if (toPlace != null && toTime != "To") {
-                    Database().rentBike(widget.bike);
+                    Database().rentBike(widget.bike , toPlace);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

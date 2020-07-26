@@ -20,12 +20,12 @@ class BarkingSeats extends StatelessWidget {
     return firestoreInstance.collection("Barking requests").snapshots();
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return  Scaffold(appBar: AppBar(
-        backgroundColor: Colors.indigo,
-        title: Text("All Parked Seats") ,
-      ), body: Container(color: kPrimaryLightColor,
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(appBar: AppBar(
+      backgroundColor: Colors.indigo,
+      title: Text("All Parked Seats") ,
+    ), body: Container(color: kPrimaryLightColor,
 
       child:StreamBuilder<QuerySnapshot>(
         stream: loadBarkingSeats(),
@@ -40,9 +40,9 @@ class BarkingSeats extends StatelessWidget {
               var data = doc.data;
               print(doc.data);
               orders.add(BarkedSeat(
-                  UserName:  data['userName'],
-                  nationalId: data["natId"],
-                  barkedSeat: data['seat'],
+                UserName:  data['userName'],
+                nationalId: data["natId"],
+                barkedSeat: data['seat'],
                 StoreName: data['Store Name'],
 
               ));
@@ -55,7 +55,9 @@ class BarkingSeats extends StatelessWidget {
 
                 return VerticalUserCard(BarkedSeat: orders[index].barkedSeat,
                     Name: orders[index].UserName,
-                    NationalId: orders[index].nationalId);
+                    NationalId: orders[index].nationalId,
+                    StoreName: orders[index].StoreName
+                );
 
               },
             );
@@ -64,22 +66,22 @@ class BarkingSeats extends StatelessWidget {
       ),
 
 
-      )
-      );
+    )
+    );
 
 
 
 
 
-    }
   }
+}
 
 
 class VerticalUserCard extends StatelessWidget {
 
   final String Name;
   final String NationalId;
-  final String BarkedSeat;
+  final int BarkedSeat;
   final String StoreName;
 
 
@@ -105,7 +107,7 @@ class VerticalUserCard extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.add_circle),
               title: Text(
-                "Seat number: " +BarkedSeat,
+                "Seat number: " +BarkedSeat.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -116,14 +118,14 @@ class VerticalUserCard extends StatelessWidget {
               subtitle: Column(
                 children: [
                   Text(
-               "Usernam:"+ Name,
+                    "Usernam:"+ Name,
                     style: TextStyle(
                       fontSize: 16,
                       color: kPrimaryLightColor,
                     ),
                   ),
                   Text(
-                 "NationalId:"+   NationalId,
+                    "NationalId:"+   NationalId,
                     style: TextStyle(
                       fontSize: 16,
                       color: kPrimaryLightColor,

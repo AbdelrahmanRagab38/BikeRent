@@ -4,11 +4,15 @@ import 'package:bikerent/Models/bike.dart';
 import 'package:bikerent/Models/place.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 
 class LocationsMap extends StatefulWidget {
   static final String id = "/locationsMap";
+  final Position currentLocation;
+
+  LocationsMap({this.currentLocation});
 
   @override
   _LocationsMapState createState() => _LocationsMapState();
@@ -17,10 +21,29 @@ class LocationsMap extends StatefulWidget {
 class _LocationsMapState extends State<LocationsMap> {
   GoogleMapController _controller;
   String dropdownValue = "Select Place";
-  CameraPosition _cameraPosition =
-      CameraPosition(target: LatLng(30.025, 31), zoom: 14);
+  CameraPosition _cameraPosition ;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  @override
+  void initState() {
+    _cameraPosition =
+        CameraPosition(target: LatLng(widget.currentLocation.latitude, widget.currentLocation.longitude), zoom: 15);
 
+
+
+    var markerIdVal = "currlocation";
+    final MarkerId markerId = MarkerId(markerIdVal);
+
+    setState(() {
+      final marker = Marker(
+        markerId: MarkerId("curr_loc"),
+        position: LatLng(widget.currentLocation.latitude, widget.currentLocation.longitude),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        infoWindow: InfoWindow(title: 'Your Location'),
+      );
+      markers[markerId] = marker;
+    });
+
+  }
   void _addMarker(Place place) {
     var markerIdVal = place.id;
     final MarkerId markerId = MarkerId(markerIdVal);
@@ -30,7 +53,7 @@ class _LocationsMapState extends State<LocationsMap> {
       markerId: markerId,
       position: place.position,
       infoWindow:
-          InfoWindow(title: place.name, snippet: place.numOfBikes.toString()),
+      InfoWindow(title: place.name, snippet: place.numOfBikes.toString()),
       onTap: () {
 //        _onMarkerTapped(markerId);
       },
@@ -67,7 +90,7 @@ class _LocationsMapState extends State<LocationsMap> {
                 Place selectedPlace;
                 if (dropdownValue != 'Select Place') {
                   selectedPlace =
-                      snapshot.data[dropdownList.indexOf(dropdownValue) - 1];
+                  snapshot.data[dropdownList.indexOf(dropdownValue) - 1];
                 }
 
                 return Row(
@@ -105,28 +128,28 @@ class _LocationsMapState extends State<LocationsMap> {
                                       items: dropdownList
                                           .map<DropdownMenuItem<String>>(
                                               (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
                                       onChanged: (String value) {
                                         setState(() {
                                           dropdownValue = value;
                                           if (dropdownValue != 'Select Place') {
                                             selectedPlace = snapshot.data[
-                                                dropdownList.indexOf(
-                                                        dropdownValue) -
-                                                    1];
+                                            dropdownList.indexOf(
+                                                dropdownValue) -
+                                                1];
                                             setState(() {
                                               _cameraPosition = CameraPosition(
                                                   target:
-                                                      selectedPlace.position,
+                                                  selectedPlace.position,
                                                   zoom: 14);
                                               _controller.animateCamera(
                                                   CameraUpdate
                                                       .newCameraPosition(
-                                                          _cameraPosition));
+                                                      _cameraPosition));
                                             });
                                           } else {
                                             selectedPlace = null;
@@ -190,9 +213,9 @@ class _LocationsMapState extends State<LocationsMap> {
                               text: 'Rent',
                               press: () async {
                                 String cameraScanResult =
-                                    await scanner.scan();
+                                await scanner.scan();
                                 Bike bike = selectedPlace.bikes.firstWhere(
-                                    (bike) => bike.id == cameraScanResult);
+                                        (bike) => bike.id == cameraScanResult);
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

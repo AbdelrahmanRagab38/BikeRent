@@ -4,6 +4,7 @@ import 'package:bikerent/Screens/LocationsMap/parkingMap.dart';
 import 'package:bikerent/Store/BikeStore/bikeRent_screen.dart';
 import 'package:bikerent/components/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../constants.dart';
 import 'Login/components/background.dart';
@@ -36,7 +37,29 @@ class HomePage extends StatelessWidget {
               RoundedButton(
                 text: "Rent",
                 press: () async {
-                  Navigator.pushNamed(context, LocationsMap.id);
+
+
+
+
+                  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+
+                  geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+                      .then((Position position) {
+                    Position currentLocation= position;
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LocationsMap(
+                              currentLocation: currentLocation,
+
+                            )));
+
+                  }).catchError((e) {
+                    print(e);
+                  });
+
+
                 },
               ),
               RoundedButton(

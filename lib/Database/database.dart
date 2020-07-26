@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class BaseDatabase {
   Future<List<Place>> getPlaces();
-  Future<bool> rentBike(Bike bike);
+  Future<bool> rentBike(Bike bike , Place p1);
   Future<int> park(Place place , String userName , String natId);
   Future<bool> bookMaintenance(Place place, String time ,String requestedTool);
   Future<Bike> getBike(String id);
@@ -74,7 +74,7 @@ class Database implements BaseDatabase {
   @override
   Future<int> park(Place place, String userName , String natId) async {
     DocumentSnapshot placeDoc =
-        await _firestore.collection("places").document(place.id).get();
+    await _firestore.collection("places").document(place.id).get();
     int seats = placeDoc['availableSeats'] - 1;
     await _firestore
         .collection("places")
@@ -95,9 +95,9 @@ class Database implements BaseDatabase {
   }
 
   @override
-  Future<bool> rentBike(Bike bike) async {
+  Future<bool> rentBike(Bike bike , Place toPlace) async {
     DocumentSnapshot place =
-        await _firestore.collection('places').document(bike.placeId).get();
+    await _firestore.collection('places').document(bike.placeId).get();
     int num = place['numOfBikes'] - 1;
     await _firestore
         .collection('places')
@@ -112,7 +112,11 @@ class Database implements BaseDatabase {
     await _firestore
         .collection("rented")
         .document(bike.id)
-        .setData({'size': bike.size, 'state': 'rented', "lastPlace":place.documentID });
+        .setData({'size': bike.size, 'state': 'rented', "lastPlace":place["name"] , "to":toPlace.name });
+    /*await _firestore
+        .collection("routes")
+        .add({'size': bike.size, 'state': 'rented', "from": place["name"] , "to": toPlace.name  , "bikeId": bike.id});*/
+
     await Future.forEach(bike.rides, (ride) async {
       await _firestore
           .collection("rented")
@@ -128,7 +132,7 @@ class Database implements BaseDatabase {
   @override
   Future<Bike> getBike(String id) async {
     DocumentSnapshot bikeDoc =
-        await _firestore.collection("bikes").document(id).get();
+    await _firestore.collection("bikes").document(id).get();
     QuerySnapshot ridesCollection = await _firestore
         .collection("bikes")
         .document(id)
@@ -141,7 +145,7 @@ class Database implements BaseDatabase {
   @override
   Future<bool> finishRide(Bike bike, Place destination) async {
     DocumentSnapshot place =
-        await _firestore.collection('places').document(destination.id).get();
+    await _firestore.collection('places').document(destination.id).get();
     int num = place['numOfBikes'] + 1;
     await _firestore
         .collection('places')
@@ -153,7 +157,7 @@ class Database implements BaseDatabase {
         .collection('bikes')
         .document(bike.id)
         .setData(
-            {'size': bike.size, 'state': 'free', "placeId": destination.id});
+        {'size': bike.size, 'state': 'free', "placeId": destination.id});
     await Future.forEach(bike.rides, (ride) async {
       await _firestore
           .collection("places")
@@ -187,7 +191,7 @@ class Database implements BaseDatabase {
   Future<List<Bike>> getRentedBikes() async {
     List<Bike> bikes = List<Bike>();
     QuerySnapshot bikesDocs =
-        await _firestore.collection('rented').getDocuments();
+    await _firestore.collection('rented').getDocuments();
     await Future.forEach(bikesDocs.documents, (doc) {
       bikes.add(Bike.fromDoc(doc, null));
     });
@@ -197,13 +201,13 @@ class Database implements BaseDatabase {
   @override
   Future<List<Bike>> getCommingBikes(String stroeName) async {
     List<Bike> bikes = List<Bike>();
-   QuerySnapshot comBikes= await _firestore.collection("rented").where("lastplace" ,  isEqualTo: stroeName).getDocuments();
+    QuerySnapshot comBikes= await _firestore.collection("rented").where("to" ,  isEqualTo: "Bike Rent 1").getDocuments();
 
-   await Future.forEach(comBikes.documents , (value){
-     Bike b = new Bike.fromDoc(value, null);
-     bikes.add(b);
-   }  );
+    await Future.forEach(comBikes.documents , (value){
+      Bike b = new Bike.fromDoc(value, null);
+      bikes.add(b);
+    }  );
 
-        return bikes;
+    return bikes;
   }
 }
